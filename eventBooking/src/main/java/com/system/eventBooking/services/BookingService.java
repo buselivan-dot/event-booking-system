@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class BookingService {
@@ -56,7 +57,7 @@ public class BookingService {
         BookingEntity booking = bookingRepository.findById(bookingId).orElseThrow(() -> new RuntimeException("There is no booking with such id"));
         EventEntity event = booking.getEvent();
         UserEntity user = userRepository.findById(requestingUserId).orElseThrow(() -> new RuntimeException("There is no user with such id"));
-        
+
         if(!booking.getUser().equals(user)){
             throw new RuntimeException("The user havent booked this event");
         }
@@ -70,5 +71,12 @@ public class BookingService {
         booking.setStatus(BookingStatus.CANCELED);
         bookingRepository.save(booking);
     }
+
+    public List<BookingEntity> getUserBookings(Long id){
+        //Check if the user exists
+        userRepository.findById(id).orElseThrow(() -> new RuntimeException("There is no such user with this id"));
+        return bookingRepository.findByUserId(id);
+    }
+
 
 }
