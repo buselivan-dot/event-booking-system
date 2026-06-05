@@ -1,6 +1,7 @@
 package com.system.eventBooking.controllers;
 
 
+import com.system.eventBooking.dto.BookingDto;
 import com.system.eventBooking.entities.BookingEntity;
 import com.system.eventBooking.services.BookingService;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +18,11 @@ public class BookingController {
     private final BookingService bookingService;
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<List<BookingEntity>> getUserBooking(@PathVariable Long id){
+    public ResponseEntity<List<BookingDto>> getUserBooking(@PathVariable Long id){
         return ResponseEntity.ok(bookingService.getUserBookings(id));
     }
     @PostMapping
-    public ResponseEntity<BookingEntity> bookTicket(@RequestParam Long userId, @RequestParam Long eventId){
+    public ResponseEntity<BookingDto> bookTicket(@RequestParam Long userId, @RequestParam Long eventId){
         return ResponseEntity.status(HttpStatus.CREATED).body(bookingService.bookTicket(userId, eventId));
     }
     @DeleteMapping("/{id}")

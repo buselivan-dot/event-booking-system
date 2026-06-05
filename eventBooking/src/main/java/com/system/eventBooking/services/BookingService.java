@@ -1,10 +1,12 @@
 package com.system.eventBooking.services;
 
+import com.system.eventBooking.dto.BookingDto;
 import com.system.eventBooking.entities.BookingEntity;
 import com.system.eventBooking.entities.EventEntity;
 import com.system.eventBooking.entities.UserEntity;
 import com.system.eventBooking.enums.BookingStatus;
 import com.system.eventBooking.enums.EventStatus;
+import com.system.eventBooking.mappers.BookingMapper;
 import com.system.eventBooking.repositories.BookingRepository;
 import com.system.eventBooking.repositories.EventRepository;
 import com.system.eventBooking.repositories.UserRepository;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,10 +24,10 @@ public class BookingService {
     private final BookingRepository bookingRepository;
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
-
+    private final BookingMapper bookingMapper;
 
     @Transactional
-    public BookingEntity bookTicket(Long userId, Long eventId){
+    public BookingDto bookTicket(Long userId, Long eventId){
         EventEntity event = eventRepository.findById(eventId).orElseThrow(() -> new RuntimeException("There is no event with such id"));
         UserEntity user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("There is no user with such id"));
         BookingEntity booking = new BookingEntity();
@@ -46,7 +49,7 @@ public class BookingService {
         booking.setStatus(BookingStatus.ACTIVE);
         booking.setBookedAt(LocalDateTime.now());
 
-        return bookingRepository.save(booking);
+        return bookingMapper.toDto(bookingRepository.save(booking));
     }
     @Transactional
     public void cancelBooking(Long bookingId, Long requestingUserId){
@@ -71,10 +74,12 @@ public class BookingService {
         bookingRepository.save(booking);
     }
 
-    public List<BookingEntity> getUserBookings(Long id){
+    public List<BookingDto> getUserBookings(Long id){
         //Check if the user exists
-        userRepository.findById(id).orElseThrow(() -> new RuntimeException("There is no such user with this id"));
-        return bookingRepository.findByUserId(id);
+        userRepository.findById(id).orElseThrow(() -> new RuntimeException("No user with such id"));
+        return bookingRepository.findByUserId(id).stream()
+                .map(bookingMapper::toDto)
+                .collect(Collectors.toList());
     }
 
 

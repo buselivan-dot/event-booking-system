@@ -1,7 +1,10 @@
 package com.system.eventBooking.controllers;
 
+import com.system.eventBooking.dto.CreateEventRequest;
+import com.system.eventBooking.dto.EventDto;
 import com.system.eventBooking.entities.EventEntity;
 import com.system.eventBooking.services.EventService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,17 +20,16 @@ public class EventController {
 
 
     @GetMapping
-    public ResponseEntity<List<EventEntity>> getAllEvents(){
+    public ResponseEntity<List<EventDto>> getAllEvents(){
         return ResponseEntity.ok(eventService.getAllEvents());
     }
     @GetMapping("/{id}")
-    public ResponseEntity<EventEntity> getEventById(@PathVariable Long id){
+    public ResponseEntity<EventDto> getEventById(@PathVariable Long id){
         return ResponseEntity.ok(eventService.getEventById(id));
     }
     @PostMapping
-    public ResponseEntity<EventEntity> createEvent(@RequestBody EventEntity event){
-        EventEntity created = eventService.createEvent(event);
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    public ResponseEntity<EventDto> createEvent(@RequestBody @Valid CreateEventRequest request){
+        return ResponseEntity.status(HttpStatus.CREATED).body(eventService.createEvent(request));
     }
     @PutMapping("/{id}/cancel")
     public ResponseEntity<Void> cancelEvent(@PathVariable Long id){
