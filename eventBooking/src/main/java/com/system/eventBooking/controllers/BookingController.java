@@ -3,6 +3,7 @@ package com.system.eventBooking.controllers;
 
 import com.system.eventBooking.entities.BookingEntity;
 import com.system.eventBooking.services.BookingService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,13 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/bookings")
 public class BookingController {
     private final BookingService bookingService;
-
-    public BookingController(BookingService bookingService){
-        this.bookingService = bookingService;
-    }
 
     @GetMapping("/user/{id}")
     public ResponseEntity<List<BookingEntity>> getUserBooking(@PathVariable Long id){

@@ -18,7 +18,7 @@ import java.util.List;
 public class EventEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String eventName;
     private String description;
 
@@ -33,7 +33,7 @@ public class EventEntity {
     private long price;
 
     @Enumerated(EnumType.STRING)
-    EventStatus status;
+    private EventStatus status;
 
     //joining with BookingEntity table
     @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)

@@ -11,9 +11,9 @@ import java.util.Optional;
 
 @Repository
 public interface EventRepository extends JpaRepository<EventEntity, Long> {
-    Optional<EventEntity> findByName(String eventName);
+    Optional<EventEntity> findByEventName(String eventName);
     List<EventEntity> findByDate(LocalDateTime date);
-    List<EventEntity> findByPrice(long min, long max);
+    List<EventEntity> findByPriceBetween(long min, long max);
     List<EventEntity> findByCity(String city);
     List<EventEntity> findByStatus(EventStatus status);
 }

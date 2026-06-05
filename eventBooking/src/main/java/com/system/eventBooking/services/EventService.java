@@ -3,17 +3,16 @@ package com.system.eventBooking.services;
 import com.system.eventBooking.entities.EventEntity;
 import com.system.eventBooking.enums.EventStatus;
 import com.system.eventBooking.repositories.EventRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class EventService {
     private final EventRepository eventRepository;
 
-    public EventService(EventRepository eventRepository){
-        this.eventRepository = eventRepository;
-    }
     public EventEntity createEvent(EventEntity event){
         return eventRepository.save(event);
     }

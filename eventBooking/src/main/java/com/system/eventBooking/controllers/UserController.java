@@ -3,17 +3,15 @@ package com.system.eventBooking.controllers;
 import com.system.eventBooking.entities.UserEntity;
 import com.system.eventBooking.enums.Role;
 import com.system.eventBooking.services.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/users")
+@RequiredArgsConstructor
+@RequestMapping("/api/users")
 public class UserController {
     private final UserService userService;
-
-    public UserController(UserService userService){
-        this.userService = userService;
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserEntity> getUserById(@PathVariable Long id){

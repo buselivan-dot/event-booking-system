@@ -2,21 +2,19 @@ package com.system.eventBooking.controllers;
 
 import com.system.eventBooking.entities.EventEntity;
 import com.system.eventBooking.services.EventService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/events")
+@RequiredArgsConstructor
+@RequestMapping("/api/events")
 public class EventController {
     private final EventService eventService;
 
-    public EventController(EventService eventService){
-        this.eventService = eventService;
-    }
 
     @GetMapping
     public ResponseEntity<List<EventEntity>> getAllEvents(){

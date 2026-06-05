@@ -9,23 +9,19 @@ import com.system.eventBooking.repositories.BookingRepository;
 import com.system.eventBooking.repositories.EventRepository;
 import com.system.eventBooking.repositories.UserRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class BookingService {
     private final BookingRepository bookingRepository;
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
 
-    public BookingService(BookingRepository bookingRepository, EventRepository eventRepository,
-                          UserRepository userRepository){
-        this.bookingRepository = bookingRepository;
-        this.eventRepository = eventRepository;
-        this.userRepository = userRepository;
-    }
 
     @Transactional
     public BookingEntity bookTicket(Long userId, Long eventId){
@@ -63,6 +59,9 @@ public class BookingService {
         }
         if(event.getStatus().equals(EventStatus.CANCELLED) || event.getStatus().equals(EventStatus.PASSED)){
             throw new RuntimeException("Event is not available");
+        }
+        if(booking.getStatus().equals(BookingStatus.CANCELED)){
+            throw new RuntimeException("Booking is already cancelled");
         }
 
         event.setAvailableSeats(event.getAvailableSeats()+1);
